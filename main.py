@@ -23,9 +23,13 @@ def cria_transacao(cliente_id):
     payload = json.loads(request.data)
 
     with pool.connection() as conn:
-        saldo, limite = conn.execute(
+        result = conn.execute(
             f"SELECT saldo, limite FROM clientes WHERE id = {cliente_id} FOR UPDATE"
         ).fetchone()
+        if result is None:
+            return "", 404
+        saldo, limite = result
+        
         if payload["tipo"] == "c":
             saldo_futuro = saldo + payload["valor"]
         else:
