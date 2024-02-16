@@ -6,7 +6,8 @@ from psycopg_pool import ConnectionPool
 app = Flask(__name__)
 pool = ConnectionPool(
     "host=localhost port=5432 dbname=rinhapython user=postgres password=postgres",
-    min_size=2,
+    min_size=10,
+    max_size=50,
 )
 pool.wait()
 
@@ -14,6 +15,19 @@ pool.wait()
 @app.route("/clientes/<cliente_id>/transacoes", methods=["POST"])
 def cria_transacao(cliente_id):
     payload = json.loads(request.data)
+
+    for campo in ("tipo", "valor", "descricao"):
+        if campo not in payload:
+            return "", 400
+
+    if payload["tipo"] not in ("c", "d"):
+         return "", 400
+
+    if not isinstance(payload["valor"], int):
+        return "", 400
+
+    if not isinstance(payload["descricao"], str):
+        return "", 400
 
     with pool.connection() as conn:
         result = conn.execute(

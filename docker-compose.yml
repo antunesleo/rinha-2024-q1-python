@@ -17,7 +17,7 @@ services:
       resources:
         limits:
           cpus: '0.25'
-          memory: '0.7GB'
+          memory: '256MB'
 
   api2:
     environment:
@@ -35,7 +35,7 @@ services:
       resources:
         limits:
           cpus: '0.25'
-          memory: '0.7GB'
+          memory: '256MB'
 
   nginx:
     image: nginx:1.25.3
@@ -72,9 +72,8 @@ services:
         resources:
           limits:
             cpus: '0.5'
-            memory: '1GB'
+            memory: '512MB'
 
 volumes:
   postgresql_data:
   init.sql:
-
