@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timezone
 from flask import Flask, request
 from psycopg_pool import ConnectionPool
 
@@ -8,14 +9,6 @@ pool = ConnectionPool(
     min_size=2,
 )
 pool.wait()
-
-
-@app.route("/")
-def hello_world():
-    print(request.data)
-    with pool.connection() as conn:
-        result = conn.execute("SELECT 1+1").fetchone()
-        return f"<p>1 + 1 = {result[0]}</p>"
 
 
 @app.route("/clientes/<cliente_id>/transacoes", methods=["POST"])
@@ -42,3 +35,37 @@ def cria_transacao(cliente_id):
             f"INSERT INTO transacoes (cliente_id, tipo, descricao, valor) VALUES ({cliente_id}, '{payload['tipo']}', '{payload['descricao']}', {payload['valor']})"
         )
         return "", 200
+
+
+@app.route("/clientes/<cliente_id>/extrato", methods=["GET"])
+def extrato(cliente_id):
+    with pool.connection() as conn:
+        result = conn.execute(
+            f"SELECT saldo, limite FROM clientes WHERE id = {cliente_id}"
+        ).fetchone()
+        if result is None:
+            return "", 404
+        saldo, limite = result
+        
+        resposta = {
+            "saldo": {
+                "total": saldo,
+                "data_extrato": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "limite": limite,
+            },
+            "ultimas_transacoes": []
+        }
+
+        result = conn.execute(
+            f"SELECT valor, tipo, descricao, realizada_em FROM transacoes WHERE cliente_id = {cliente_id} ORDER BY realizada_em DESC LIMIT 10"
+        ).fetchall()
+        for transacao_db in result:
+            resposta["ultimas_transacoes"].append({
+                "valor": transacao_db[0],
+                "tipo": transacao_db[1],
+                "descricao": transacao_db[2],
+                "realizada_em": transacao_db[3],
+            })
+
+
+        return resposta, 200
