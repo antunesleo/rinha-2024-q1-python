@@ -7,7 +7,7 @@ app = Flask(__name__)
 pool = ConnectionPool(
     "host=localhost port=5432 dbname=rinhapython user=postgres password=postgres",
     min_size=10,
-    max_size=50,
+    max_size=100,
 )
 pool.wait()
 
@@ -18,16 +18,16 @@ def cria_transacao(cliente_id):
 
     for campo in ("tipo", "valor", "descricao"):
         if campo not in payload:
-            return "", 400
+            return "", 422
 
     if payload["tipo"] not in ("c", "d"):
-         return "", 400
+         return "", 422
 
     if not isinstance(payload["valor"], int):
-        return "", 400
+        return "", 422
 
     if not isinstance(payload["descricao"], str):
-        return "", 400
+        return "", 422
 
     with pool.connection() as conn:
         result = conn.execute(
@@ -48,7 +48,8 @@ def cria_transacao(cliente_id):
         conn.execute(
             f"INSERT INTO transacoes (cliente_id, tipo, descricao, valor) VALUES ({cliente_id}, '{payload['tipo']}', '{payload['descricao']}', {payload['valor']})"
         )
-        return "", 200
+        conn.execute(f"UPDATE clientes SET saldo = {saldo_futuro} WHERE id={cliente_id}")
+        return {"limite": limite, "saldo": saldo_futuro}, 200
 
 
 @app.route("/clientes/<cliente_id>/extrato", methods=["GET"])
