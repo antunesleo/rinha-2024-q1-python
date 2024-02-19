@@ -16,8 +16,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: '446MB'
+          cpus: '0.5'
+          memory: '148MB'
 
   api2:
     environment:
@@ -34,8 +34,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: '446MB'
+          cpus: '0.5'
+          memory: '148MB'
 
   nginx:
     image: nginx:1.25.3
@@ -48,15 +48,16 @@ services:
     deploy:
         resources:
           limits:
-            cpus: '0.5'
-            memory: '128MB'
+            cpus: '0.1'
+            memory: '30MB'
 
   db:
-    image: "postgres:12-bullseye"
+    image: "postgres:16-bullseye"
     hostname: postgres
     volumes:
       - postgresql_data:/var/lib/postgres/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -68,11 +69,12 @@ services:
       - POSTGRES_PASSWORD=postgres
       - PGPASSWORD=postgres
     network_mode: "host"
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     deploy:
         resources:
           limits:
-            cpus: '0.5'
-            memory: '512MB'
+            cpus: '0.4'
+            memory: '220MB'
 
 volumes:
   postgresql_data:
