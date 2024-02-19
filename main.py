@@ -26,7 +26,6 @@ def timing(f):
     return wrap
 
 @app.route("/clientes/<cliente_id>/transacoes", methods=["POST"])
-@timing
 def cria_transacao(cliente_id):
     payload = json.loads(request.data)
 
@@ -71,7 +70,6 @@ def cria_transacao(cliente_id):
 
 
 @app.route("/clientes/<cliente_id>/extrato", methods=["GET"])
-@timing
 def extrato(cliente_id):
     with pool.connection() as conn:
         result = conn.execute(
