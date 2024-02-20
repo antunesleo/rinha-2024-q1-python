@@ -6,7 +6,7 @@ from psycopg_pool import ConnectionPool
 app = Flask(__name__)
 pool = ConnectionPool(
     "host=localhost port=5432 dbname=rinhapython user=postgres password=postgres",
-    min_size=10,
+    min_size=14,
     max_size=50,
 )
 pool.wait()
