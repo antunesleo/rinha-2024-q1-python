@@ -7,23 +7,10 @@ app = Flask(__name__)
 pool = ConnectionPool(
     "host=localhost port=5432 dbname=rinhapython user=postgres password=postgres",
     min_size=10,
-    max_size=20,
+    max_size=25,
 )
 pool.wait()
 
-from functools import wraps
-from time import time
-
-def timing(f):
-    @wraps(f)
-    def wrap(*args, **kw):
-        ts = time()
-        result = f(*args, **kw)
-        te = time()
-        print('func:%r args:[%r, %r] took: %2.4f sec' % \
-          (f.__name__, args, kw, te-ts))
-        return result
-    return wrap
 
 @app.route("/clientes/<cliente_id>/transacoes", methods=["POST"])
 def cria_transacao(cliente_id):
@@ -98,6 +85,5 @@ def extrato(cliente_id):
                 "descricao": transacao_db[2],
                 "realizada_em": transacao_db[3],
             })
-
 
         return resposta, 200

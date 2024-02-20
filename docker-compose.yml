@@ -4,7 +4,6 @@ services:
   api1:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/rinhapython
-      ESTRATEGIA_DE_TRANSACAO: pessimista
       PORT: 8001
     build:
       context: .
@@ -24,7 +23,6 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/rinhapython
       PORT: 8002
-      ESTRATEGIA_DE_TRANSACAO: pessimista
     build:
       context: .
     volumes:
