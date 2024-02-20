@@ -83,7 +83,7 @@ def extrato(cliente_id):
                 "valor": transacao_db[0],
                 "tipo": transacao_db[1],
                 "descricao": transacao_db[2],
-                "realizada_em": transacao_db[3],
+                "realizada_em": transacao_db[3].isoformat().replace("+00:00", "Z"),
             })
 
         return resposta, 200
