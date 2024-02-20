@@ -7,4 +7,4 @@ COPY . /app
 
 RUN pip install -r requirements.txt
 
-CMD ["gunicorn", "main:app", "-c", "gunicorn_conf.py"]
+CMD ["gunicorn", "main:app", "-c", -b unix:/gunicorn_socket/socket"gunicorn_conf.py"]
