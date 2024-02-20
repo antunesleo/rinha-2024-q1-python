@@ -1,10 +1,10 @@
-CREATE TABLE clientes (id SERIAL PRIMARY KEY, limite INT NOT NULL, saldo INT NOT NULL);
+CREATE TABLE clientes (id SERIAL PRIMARY KEY, limite INT NOT NULL, saldo INT NOT NULL, versao INT NOT NULL);
 
-INSERT INTO clientes (id, limite, saldo) VALUES (1, 100000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (2, 80000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (3, 1000000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (4, 10000000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (5, 500000, 0);
+INSERT INTO clientes (id, limite, saldo, versao) VALUES (1, 100000, 0, 1);
+INSERT INTO clientes (id, limite, saldo, versao) VALUES (2, 80000, 0, 1);
+INSERT INTO clientes (id, limite, saldo, versao) VALUES (3, 1000000, 0, 1);
+INSERT INTO clientes (id, limite, saldo, versao) VALUES (4, 10000000, 0, 1);
+INSERT INTO clientes (id, limite, saldo, versao) VALUES (5, 500000, 0, 1);
 
 CREATE TABLE transacoes (
     cliente_id INT NOT NULL, 
@@ -16,3 +16,5 @@ CREATE TABLE transacoes (
 );
 
 CREATE INDEX idx_client_id ON transacoes(cliente_id);
+
+-- CREATE EXTENSION pg_stat_statements; 

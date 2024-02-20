@@ -4,6 +4,7 @@ services:
   api1:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/rinhapython
+      ESTRATEGIA_DE_TRANSACAO: pessimista
       PORT: 8001
     build:
       context: .
@@ -17,12 +18,13 @@ services:
       resources:
         limits:
           cpus: '0.5'
-          memory: '148MB'
+          memory: '100MB'
 
   api2:
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/rinhapython
       PORT: 8002
+      ESTRATEGIA_DE_TRANSACAO: pessimista
     build:
       context: .
     volumes:
@@ -35,7 +37,7 @@ services:
       resources:
         limits:
           cpus: '0.5'
-          memory: '148MB'
+          memory: '100MB'
 
   nginx:
     image: nginx:1.25.3
@@ -74,7 +76,7 @@ services:
         resources:
           limits:
             cpus: '0.4'
-            memory: '220MB'
+            memory: '316MB'
 
 volumes:
   postgresql_data:
