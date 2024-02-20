@@ -7,7 +7,7 @@ app = Flask(__name__)
 pool = ConnectionPool(
     "host=localhost port=5432 dbname=rinhapython user=postgres password=postgres",
     min_size=10,
-    max_size=25,
+    max_size=50,
 )
 pool.wait()
 
