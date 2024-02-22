@@ -12,7 +12,7 @@ Implementação da rinha de backend 2024 q1 em python
 
 ## Resultados
 
-A ser definido
+![Alt text](/resultado.png?raw=true "Resultado")
 
 ## Estratégia
 
