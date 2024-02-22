@@ -3,7 +3,11 @@ version: "3"
 services:
   api1:
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/rinhapython
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+      DATABASE_NAME: rinhapython
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
       PORT: 8001
     command: bash -c "gunicorn main:app -c gunicorn_conf.py -b unix:/tmp/sockets/api1.sock"
     build:
@@ -23,7 +27,11 @@ services:
 
   api2:
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/rinhapython
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+      DATABASE_NAME: rinhapython
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
       PORT: 8002
     command: bash -c "gunicorn main:app -c gunicorn_conf.py -b unix:/tmp/sockets/api2.sock"
     build:

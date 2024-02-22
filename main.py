@@ -1,11 +1,18 @@
 import json
+import os
 from datetime import datetime, timezone
 from flask import Flask, request
 from psycopg_pool import ConnectionPool
 
+database_host = os.environ.get("DATABASE_HOST")
+database_port = int(os.environ.get("DATABASE_PORT"))
+database_name = os.environ.get("DATABASE_NAME")
+database_password = os.environ.get("DATABASE_PASSWORD")
+database_user = os.environ.get("DATABASE_USER")
+
 app = Flask(__name__)
 pool = ConnectionPool(
-    "host=localhost port=5432 dbname=rinhapython user=postgres password=postgres",
+    f"host={database_host} port={database_port} dbname={database_name} user={database_user} password={database_password}",
     min_size=14,
     max_size=50,
 )
