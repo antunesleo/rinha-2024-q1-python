@@ -2,7 +2,6 @@ version: "3"
 
 services:
   api1: &api
-    image: antunesleo/rinha-2024-q1-python
     environment:
       DATABASE_HOST: localhost
       DATABASE_PORT: 5432
@@ -10,6 +9,8 @@ services:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
     command: bash -c "gunicorn main:app -c gunicorn_conf.py -b unix:/tmp/sockets/api1.sock"
+    build:
+      context: .
     volumes:
       - .:/app:z
       - sockets:/tmp/sockets
